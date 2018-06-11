@@ -7,11 +7,12 @@ RUN apt-get update \
     curl \
     git \
     libfreetype6-dev \
-    libmcrypt-dev \
     libjpeg62-turbo-dev \
+    libmcrypt-dev \
     libpng-dev \
     libssl-dev \
     libxml2-dev \
+    libxslt1-dev \
     mysql-client \
     rsync \
     zlib1g-dev \
@@ -22,6 +23,12 @@ RUN apt-get update \
     && docker-php-ext-install -j$(nproc) gd
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+ADD files/apache-vhost.conf /etc/apache2/sites-enabled/000-default.conf
+ADD files/php-config.ini /usr/local/etc/php/conf.d/php-config.ini
+ADD files/php-timezone.ini /usr/local/etc/php/conf.d/php-timezone.ini
+
+RUN a2enmod rewrite
 
 VOLUME ["/var/www/html"]
 
