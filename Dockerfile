@@ -33,6 +33,7 @@ RUN a2enmod rewrite
 VOLUME ["/var/www/html"]
 
 COPY files/entrypoint.sh /entrypoint.sh
+COPY files/wait-for-it/wait-for-it.sh /wait-for-it.sh
 
 EXPOSE 80
 
