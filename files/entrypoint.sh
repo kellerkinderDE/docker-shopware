@@ -21,6 +21,13 @@ if [ $SHOPWARE_INSTALLED -eq 0 ]; then
     php /var/www/html/bin/console sw:firstrunwizard:disable
 fi
 
+export INSTALL_DEMO=${USE_DEMO-"0"}
+if [ $INSTALL_DEMO -ne "0" ]; then
+    php /var/www/html/bin/console sw:store:download SwagDemoDataDE
+    php /var/www/html/bin/console sw:plugin:refresh
+    php /var/www/html/bin/console sw:plugin:install --activate SwagDemoDataDE
+fi
+
 for i in config.php \
     var/log/ \
     var/cache/ \
