@@ -29,8 +29,11 @@ if [ $INSTALL_DEMO -ne "0" ]; then
 fi
 
 export ENABLE_AUTH=${AUTH_USER-""}${AUTH_PASSWORD-""}
-if [ $ENABLE_AUTH -ne "" ]; then
+if [ -n $ENABLE_AUTH  ]; then
     htpasswd -b -c /var/www/html/.htpasswd $AUTH_USER $AUTH_PASSWORD
+    echo "Authtype Basic
+    AuthUserFile /var/www/html/.htpasswd
+    Require valid-user" >> /var/www/html/.htaccess
 fi
 
 for i in config.php \
