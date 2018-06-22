@@ -28,6 +28,11 @@ if [ $INSTALL_DEMO -ne "0" ]; then
     php /var/www/html/bin/console sw:plugin:install --activate SwagDemoDataDE
 fi
 
+export ENABLE_AUTH=${AUTH_USER-""}${AUTH_PASSWORD-""}
+if [ $ENABLE_AUTH -ne "" ]; then
+    htpasswd -b -c /var/www/html/.htpasswd $AUTH_USER $AUTH_PASSWORD
+fi
+
 for i in config.php \
     var/log/ \
     var/cache/ \
