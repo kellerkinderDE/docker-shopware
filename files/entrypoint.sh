@@ -10,10 +10,9 @@ if [ ! -e /var/www/html/shopware.php ]; then
     rsync --ignore-existing -r /tmp/shopware/ /var/www/html >/dev/null
 fi
 
+export SHOP_LOCALE=${LOCALE-"de_DE"}
+export SHOPNAME=${NAME-"Test Shop"}
 if [ $SHOPWARE_INSTALLED -eq 0 ]; then
-    export SHOP_LOCALE=${LOCALE-"de_DE"}
-    export SHOPNAME=${NAME-"Test Shop"}
-
     /wait-for-it.sh $DATABASE_HOST:3306 -t 0
 
     php /var/www/html/recovery/install/index.php --db-host="$DATABASE_HOST" --db-user="$DATABASE_USER" --db-password="$DATABASE_PASSWORD" --db-name="$DATABASE_DB" --admin-username="demo" --admin-password="demo" --admin-locale="$SHOP_LOCALE" --admin-name="Demo-Admin" --admin-email="$ADMIN_EMAIL" --shop-locale="$SHOP_LOCALE" --shop-host="$SERVERNAME" --shop-currency="EUR" --shop-name="$SHOPNAME" -q
@@ -32,6 +31,7 @@ export ENABLE_AUTH=${AUTH_USER-""}${AUTH_PASSWORD-""}
 if [ -n $ENABLE_AUTH  ]; then
     htpasswd -b -c /var/www/html/.htpasswd $AUTH_USER $AUTH_PASSWORD
     echo "Authtype Basic
+    AuthName \"$SHOPNAME\"
     AuthUserFile /var/www/html/.htpasswd
     Require valid-user" >> /var/www/html/.htaccess
 fi
