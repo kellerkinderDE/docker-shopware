@@ -27,6 +27,20 @@ if [ $INSTALL_DEMO -ne "0" ]; then
     php /var/www/html/bin/console sw:plugin:install --activate SwagDemoDataDE
 fi
 
+if [[ -n "${CLONE_URL}" ]]; then
+    # it's a review app
+
+    if [[ -n "${PLUGIN_NAME}" ]]; then
+        # it's a plugin
+        git clone "${CLONE_URL}" /var/www/html/custom/plugins/${PLUGIN_NAME}
+    elif [[ -n "${PROJECT_ROOT}" ]]; then
+        # it's a shop
+        git clone "${CLONE_URL}" /tmp/project
+        rsync -r "/tmp/project/${PROJECT_ROOT}/" /var/www/html >/dev/null
+        rm -rf /tmp/project
+    fi
+fi
+
 export ENABLE_AUTH=${AUTH_USER-""}${AUTH_PASSWORD-""}
 if [[ -n "${ENABLE_AUTH}" ]]; then
     htpasswd -b -c /var/www/html/.htpasswd $AUTH_USER $AUTH_PASSWORD
