@@ -24,9 +24,9 @@ RUN apt-get update \
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-ADD files/apache-vhost.conf /etc/apache2/sites-enabled/000-default.conf
-ADD files/php-config.ini /usr/local/etc/php/conf.d/php-config.ini
-ADD files/php-timezone.ini /usr/local/etc/php/conf.d/php-timezone.ini
+COPY files/apache-vhost.conf /etc/apache2/sites-enabled/000-default.conf
+COPY files/php-config.ini /usr/local/etc/php/conf.d/php-config.ini
+COPY files/php-timezone.ini /usr/local/etc/php/conf.d/php-timezone.ini
 
 RUN a2enmod rewrite
 
@@ -34,6 +34,7 @@ VOLUME ["/var/www/html"]
 
 COPY files/entrypoint.sh /entrypoint.sh
 COPY files/wait-for-it/wait-for-it.sh /wait-for-it.sh
+COPY files/kellerkinder-plugin.php /kellerkinder-plugin.php
 
 EXPOSE 80
 
