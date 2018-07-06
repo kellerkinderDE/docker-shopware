@@ -41,14 +41,7 @@ if [[ -n "${CLONE_URL}" ]]; then
     fi
 fi
 
-export ENABLE_AUTH=${AUTH_USER-""}${AUTH_PASSWORD-""}
-if [[ -n "${ENABLE_AUTH}" ]]; then
-    htpasswd -b -c /var/www/html/.htpasswd $AUTH_USER $AUTH_PASSWORD
-    echo "Authtype Basic
-    AuthName \"$SHOPNAME\"
-    AuthUserFile /var/www/html/.htpasswd
-    Require valid-user" >> /var/www/html/.htaccess
-fi
+find /var/www/html/custom/plugins -type f -name kellerkinder-plugin.json -exec php /kellerkinder-plugin.php {} \;
 
 for i in config.php \
     var/log/ \
