@@ -32,10 +32,10 @@ if [[ -n "${CLONE_URL}" ]]; then
 
     if [[ -n "${PLUGIN_NAME}" ]]; then
         # it's a plugin
-        git clone "${CLONE_URL}" /var/www/html/custom/plugins/${PLUGIN_NAME}
+        git clone "${CLONE_URL}" /var/www/html/custom/plugins/${PLUGIN_NAME} -b "${CLONE_REF}"
     elif [[ -n "${PROJECT_ROOT}" ]]; then
         # it's a shop
-        git clone "${CLONE_URL}" /tmp/project
+        git clone "${CLONE_URL}" /tmp/project -b "${CLONE_REF}"
         rsync -r "/tmp/project/${PROJECT_ROOT}/" /var/www/html >/dev/null
         rm -rf /tmp/project
     fi
